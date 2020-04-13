@@ -1,0 +1,19 @@
+{
+  "author": {
+    "name": "Nirikshan Bhusal"
+  },
+  "dependencies": {
+    "indo-compiler": "1.1.5",
+    "uglify-es": "^3.3.9"
+  },
+  "deprecated": false,
+  "description": "Loader for Click.cl with indo-compiler",
+  "devDependencies": {},
+  "license": "ISC",
+  "main": "index.js",
+  "name": "click-loader",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.3.7"
+}
