@@ -1,7 +1,35 @@
 {
+  "_from": "click-loader@^2.3.7",
+  "_id": "click-loader@2.3.7",
+  "_inBundle": false,
+  "_integrity": "sha512-RRF2ZyHK3BAKUsfBc9DmqaL2ymOuaBGTOrpUYxAA0kFFqT6i2i2DPRB4ZsJQ8XcENP8P1c/4WhHr3YQSybRMHw==",
+  "_location": "/click-loader",
+  "_phantomChildren": {
+    "babel-minify": "0.4.3",
+    "file-system": "2.2.2",
+    "fs": "0.0.1-security"
+  },
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "click-loader@^2.3.7",
+    "name": "click-loader",
+    "escapedName": "click-loader",
+    "rawSpec": "^2.3.7",
+    "saveSpec": null,
+    "fetchSpec": "^2.3.7"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/click-loader/-/click-loader-2.3.7.tgz",
+  "_shasum": "457e4acdad80b109735b1f72f3e17a0b74b2615d",
+  "_spec": "click-loader@^2.3.7",
+  "_where": "/home/nirikshan/Desktop/create-click-app",
   "author": {
     "name": "Nirikshan Bhusal"
   },
+  "bundleDependencies": false,
   "dependencies": {
     "indo-compiler": "1.1.5",
     "uglify-es": "^3.3.9"
