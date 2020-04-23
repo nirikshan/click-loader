@@ -6,12 +6,9 @@ var UglifyJS = require("uglify-es"),
     io2  =  require('./compiler/pull-html');
 
 module.exports = function(source, a) {
-
     function uid() {
-        return Math.round(Math.random() * (99999999999 - 11111111111) + 11111111111);
+        return Math.round(Math.random() * (9999999999 - 1111111111) + 1111111111);
     }
-
-     
     var isClickFile = ''; /*This is important because The Compilation process is different with different file ext*/
     var _this = this.loaders;
     for (let index = 0; index < _this.length; index++) {
