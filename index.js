@@ -7,6 +7,11 @@ var UglifyJS = require("uglify-es"),
 
 module.exports = function(source, a) {
 
+    function uid() {
+        return Math.round(Math.random() * (99999999999 - 11111111111) + 11111111111);
+    }
+
+     
     var isClickFile = ''; /*This is important because The Compilation process is different with different file ext*/
     var _this = this.loaders;
     for (let index = 0; index < _this.length; index++) {
@@ -26,12 +31,26 @@ module.exports = function(source, a) {
         /*For .cl file because it has different compilation process*/
         var ExtractSet = io.ExtractWithBraces(source);
         for (let j = 0; j < ExtractSet.length; j++) {
+            const id        = uid();
             const component = ExtractSet[j],
                 ExtractHTM = io2.pullHTML(component),
                 RenderFunction = indo.Generate(ExtractHTM);
 
             source = source.replace((new RegExp('@view:', 'g')), 'view:');
-            source = source.replace(ExtractHTM, RenderFunction);
+            source = source.replace(ExtractHTM, id);
+
+            var OnlyClickComponentCodes = (UglifyJS.minify(source));
+            // console.log(RenderFunction)
+            if('code' in OnlyClickComponentCodes){
+                OnlyClickComponentCodes = OnlyClickComponentCodes.code;
+                CodeSplits = ex.WorkDivider(OnlyClickComponentCodes);
+                CodeSplits && CodeSplits.length > 0 && CodeSplits.map(
+                    (item)=>{
+                        OnlyClickComponentCodes  = OnlyClickComponentCodes.replace(id , RenderFunction+',name:"'+item.name+'"');
+                    }
+                )
+            }
+            source = OnlyClickComponentCodes;
         }
     } else {
         /*For .js file*/
@@ -59,10 +78,11 @@ module.exports = function(source, a) {
                         var sign = "'";
                     }
                     /*Back to next Stream which will send code for next process*/
-                    source = source.replace(sign + ExtractHTM + sign, RenderFunction);
+                    source = source.replace(sign + ExtractHTM + sign, RenderFunction+',name:"'+item.name+'"');
                 }
             )
         }
     }
+
     return (source);
 }
