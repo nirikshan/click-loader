@@ -8,7 +8,7 @@ var found = function found(array) {
     return(array);
   },
   WorkDivider = function WorkDivider(x , alldata) {
-    var p1        =  x.indexOf('new app(');  
+    var p1        =  x.indexOf('new App(');  
         if(p1 !== -1){
             var newstr     =   x.substr(p1),
                 allStores  =   [],
@@ -19,28 +19,47 @@ var found = function found(array) {
             }
         }
   },
-  HeavyExtraction = function HeavyExtraction(newstr , allStores) {
-    var p2        = newstr.indexOf('new app('),
+  HeavyExtraction = function HeavyExtraction(newstr , allStores = []) {
+    var p2        = newstr.indexOf('new App('),
         len1      = newstr.length;
     var quortPosition = p2 + 8;
         quorttype     = newstr.substr(quortPosition, 1),
         positionGain  = 0,
         finalposition = 0;
   
-        for (let i = quortPosition + 1 ; i < len1; i++) {
-          var el = newstr[i];
-          if(el === quorttype){
-              positionGain = i;
-              break;             
-          } 
+        for (let i = p2 ; i > 0; i--) {
+            var el = newstr[i], char3 = newstr.substr(i,3) , char5 = newstr.substr(i , 5) , char7 = newstr.substr(i , 7);
+            if( (el && el == ';')  || (el && el == "'") || (el && el == '"') || (el && el == ",")){
+                console.error('Please make sure you have supplied Valid Component Name on your click native component file.');
+                return;  
+            } 
+            if( (char3 && char3.toLocaleLowerCase() === 'var') || (char3 && char3.toLocaleLowerCase() === 'let')){
+                positionGain = i + 3;
+                break;             
+            }
+            if((char5 && char5.toLocaleLowerCase() === 'const')){
+               positionGain = i + 5;
+               break; 
+            }
+            if((char7 && char7.toLocaleLowerCase() === 'default')){
+               positionGain = i + 7;
+               break; 
+            }
         }
-        var name    = newstr.substr(quortPosition + 1, positionGain - quortPosition -1),
-            starter = newstr.indexOf(name) + name.length + 2, 
-            //target  = newstr.substr(starter, 1),
+
+        var name    = newstr.substr(positionGain , (p2 - positionGain) - 1 ),
+            starter = quortPosition, 
             state   = {
               parm1:[]
             };
         
+        if(name !== void 0){
+          name = name.trim();
+        }
+        if(name.length < 0){
+           console.log('Please make sure you have supplied component name' , newstr.substr(quortPosition));
+        }
+
         for (var j = starter + 1; j < len1; j++) {
           var el2 = newstr[j];
           if(el2 == '{'){
@@ -63,8 +82,8 @@ var found = function found(array) {
                     finalposition:finalposition
                   });
                   var lateChunk = newstr.substr(finalposition);
-                  if(lateChunk.indexOf('new app(') !== -1){
-                     var s = HeavyExtraction(lateChunk , allStores);
+                  if(lateChunk.indexOf('new App(') !== -1){
+                      HeavyExtraction(lateChunk , allStores);
                   }else{
                      break;
                   }
